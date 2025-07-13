@@ -1,231 +1,177 @@
-# CoreClient TPM-Scheduler
+# <img src="/assets/banner.png" alt="CoreClient TPM-Scheduler" width="100%"/>
 
-A sophisticated process scheduler for managing TPM-loader-linux with automatic restarts, webhook notifications, and beautiful console interface.
+<p align="center">
+  <a href="https://github.com/CoreClientIO/TPM-Scheduler"><img src="https://img.shields.io/github/stars/CoreClientIO/TPM-Scheduler?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/CoreClientIO/TPM-Scheduler"><img src="https://img.shields.io/github/license/CoreClientIO/TPM-Scheduler?style=flat-square" alt="License"></a>
+  <a href="https://img.shields.io/badge/python-3.7%2B-blue?style=flat-square"><img src="https://img.shields.io/badge/python-3.7%2B-blue?style=flat-square" alt="Python"></a>
+  <a href="https://discord.gg/VSBBfr5UTZ"><img src="https://img.shields.io/discord/1249726936425443378?label=Discord&logo=discord&style=flat-square" alt="Discord"></a>
+</p>
 
-## Features
+<h1 align="center">CoreClient TPM-Scheduler</h1>
 
-- 🔄 Automatic restart cycles with customizable duration
-- 🎨 Beautiful console interface with rich formatting
-- 📊 Real-time status display
-- 🔔 Discord webhook notifications
-- 📝 Comprehensive logging
-- ⚙️ JSON configuration management
-- 🛡️ Graceful shutdown handling
-- 📦 Modular architecture
-- 🚀 Compilable to standalone Linux executable
+<p align="center">
+  <b>A beautiful, robust process scheduler for TPM-loader-linux.<br>
+  Automatic restarts, Discord webhooks, and a modern console UI.<br>
+  <i>Programmed by NonNull</i></b>
+</p>
 
-## Installation
+---
 
-Clone the repository:
-```
-git clone https://github.com/your-org/TPM-Scheduler.git
+## <img src="https://avatars.githubusercontent.com/u/218497533?v=4" width="32"/> Features
+
+- 🔄 **Automatic restarts** with customizable duration
+- 🎨 **Rich console interface** with beautiful formatting
+- 📊 **Real-time status display**
+- 🔔 **Discord webhook notifications** (white style, emoji, avatar, status)
+- 📝 **Comprehensive logging**
+- ⚙️ **JSON configuration management**
+- 🛡️ **Graceful shutdown handling**
+- 📦 **Modular, production-ready architecture**
+- 🚀 **Standalone Linux executable** (no Python needed at runtime)
+
+---
+
+## <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="24"/> Installation
+
+```bash
+git clone https://github.com/CoreClientIO/TPM-Scheduler.git
 cd TPM-Scheduler
-```
-Make the setup script executable:
-```
 chmod +x setup.sh
-```
-Run the setup script:
-```
 ./setup.sh
 ```
 
 Everything is automated. The binary will be ready to use as `./tpm-scheduler`.
 
-## Automated Service Setup
+---
 
-For the easiest 24/7 operation, run the automated script:
+## 🤖 Automated Service Setup (Recommended)
 
-```
+For 24/7 operation, run:
+
+```bash
 ./setup_service.sh
 ```
 
-This will move the binary, create the systemd service, enable and start it, and show you all the commands you need. Perfect, fast, and reliable.
+This will:
+- Move the binary to `/usr/local/bin/`
+- Create and enable a systemd service
+- Start the scheduler in the background
+- Show you all the commands you need for management
 
-## Usage
+---
+
+## 🖥️ Usage
 
 **From Source:**
-```
+```bash
 python main.py
 ```
 
 **From Executable:**
-```
+```bash
 ./tpm-scheduler
 ```
 
-### First Run Setup
+---
 
-On first run, the scheduler will:
-1. Create a `config.json` file
-2. Prompt for Discord webhook URL (optional)
-3. Use default settings for screen name and command
+## ⚙️ Configuration
 
-### Duration Format
+On first run, a `config.json` will be created. You can edit it to customize:
 
-The scheduler accepts various duration formats:
-- `10s` - 10 seconds
-- `5m` - 5 minutes  
-- `2h` - 2 hours
-- `1d` - 1 day
-
-### Configuration
-
-Edit `config.json` to customize:
-
-```
+```json
 {
     "screen_name": "TPM",
     "command": "./TPM-loader-linux",
     "webhook_url": "https://discord.com/api/webhooks/...",
     "log_level": "INFO",
-    "log_file": "tpm-scheduler.log"
+    "log_file": "tpm-scheduler.log",
+    "cycle_duration": "1h"
 }
 ```
+- `cycle_duration` supports formats like `10s`, `5m`, `1h`, `1d`.
+- No more prompts on every start: just set your duration in the config!
 
-## Project Structure
+---
 
-```
-tpm-scheduler/
-├── main.py                 
-├── modules/
-│   ├── init.py
-│   ├── config_manager.py   
-│   ├── screen_manager.py   
-│   ├── webhook_handler.py  
-│   ├── duration_parser.py  
-│   └── logger.py          
-├── requirements.txt
-├── tpm-scheduler.spec      
-├── README.md
-└── dist/
-└── tpm-scheduler       
-```
+## 🛠️ How it Works
 
-## Deployment
-
-The built executable is self-contained and can be deployed to any Linux system without requiring Python or dependencies to be installed.
-
-### Quick Deployment
-
-1. Build the executable on your development machine
-2. Copy `./tpm-scheduler` to your target server
-3. Make it executable: `chmod +x tpm-scheduler`
-4. Run: `./tpm-scheduler`
-
-## Running as a systemd Service (24/7, No Screen Needed)
-
-*Recommended: Use `./setup_service.sh` for a fully automated setup!*
-
-After building, you can run the scheduler as a background Linux service for true 24/7 reliability.
-
-### 1. Build the Executable
-
-```
-./setup.sh
+```mermaid
+graph TD;
+    A[Start Scheduler] --> B{Load config.json};
+    B -->|No config| C[Prompt for webhook, create config];
+    B -->|Config exists| D[Read settings];
+    D --> E[Start TPM-loader in screen];
+    E --> F[Send Discord webhook];
+    F --> G[Wait for cycle_duration];
+    G --> E;
+    E -->|Error| H[Send error webhook];
 ```
 
-### 2. Move the Binary
+---
 
-```
-sudo mv tpm-scheduler /usr/local/bin/
-sudo chmod +x /usr/local/bin/tpm-scheduler
-```
+## 📸 Screenshots
 
-### 3. Create the systemd Service File
+<p align="center">
+  <img src="/assets/screenshot1.png" alt="Console UI" width="600"/>
+  <br>
+  <i>Modern, beautiful status panel</i>
+</p>
+<p align="center">
+  <img src="/assets/webhook_example.png" alt="Discord Webhook" width="500"/>
+  <br>
+  <i>White-style Discord webhook with emoji, avatar, and status</i>
+</p>
 
-Create `/etc/systemd/system/tpm-scheduler.service` with:
+---
 
-```
-[Unit]
-Description=CoreClient TPM-Scheduler
-After=network.target
+## 🖥️ Service Management
 
-[Service]
-Type=simple
-User=your-username
-WorkingDirectory=/path/to/your/config/and/TPM-loader
-ExecStart=/usr/local/bin/tpm-scheduler
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-```
-- Replace `your-username` with your Linux username.
-- Set `WorkingDirectory` to the folder with your `config.json` and `TPM-loader-linux`.
-
-### 4. Enable and Start the Service
-
-```
-sudo systemctl daemon-reload
-sudo systemctl enable tpm-scheduler
-sudo systemctl start tpm-scheduler
-```
-
-### 5. Control and Monitor the Service
+After running `./setup_service.sh`, you can:
 
 - **Restart:**
-  ```
+  ```bash
   sudo systemctl restart tpm-scheduler
   ```
 - **Stop:**
-  ```
+  ```bash
   sudo systemctl stop tpm-scheduler
   ```
-- **Status:**
+- **Start:**
+  ```bash
+  sudo systemctl start tpm-scheduler
   ```
+- **Status:**
+  ```bash
   systemctl status tpm-scheduler
   ```
 - **Logs:**
-  ```
+  ```bash
   journalctl -u tpm-scheduler -f
   ```
 
 ---
 
-This ensures your scheduler is always running, restarts on crash or reboot, and is easy to manage.
+## 📝 Logs
 
-## Logs
+All activities are logged to `tpm-scheduler.log` with timestamps and details.
 
-All activities are logged to tpm-scheduler.log with timestamps and detailed information.
+---
 
-## Discord Notifications
+## 💬 Community & Support
 
-When configured, the scheduler sends branded embed notifications for:
+- [GitHub Issues](https://github.com/CoreClientIO/TPM-Scheduler/issues)
+- [Discord Support](https://discord.gg/VSBBfr5UTZ)
 
-- Scheduler startup
-- Each restart cycle
-- Error conditions
-The embeds are styled with CoreClient branding and include:
+For issues and support, check the logs in `tpm-scheduler.log` for detailed error information.
 
-- Timestamp
-- Color-coded status (green for start, blue for restart)
-- Footer with "CoreClient TPM-Scheduler"
-- Author information
+---
 
-## Requirements
+## 🪪 License
 
-- Linux with screen command available
-- Internet connection (for webhook notifications)
-- Python 3.7+ (for building only)
+This project is part of the CoreClient ecosystem. See [LICENSE](LICENSE).
 
-## Troubleshooting
+---
 
-Screen command not found:
-```
-sudo apt-get install screen
-```
-
-Permission denied:
-```
-chmod +x tpm-scheduler
-```
-
-# License
-
-This project is part of the CoreClient ecosystem.
-
-# Support
-
-For issues and support, please check the logs in tpm-scheduler.log for detailed error information.
+<p align="center">
+  <b>Made with ❤️ by NonNull & the CoreClient team</b>
+</p>
