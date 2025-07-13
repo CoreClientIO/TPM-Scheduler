@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Fixing copy_files permission"
-chmod +x ./copy_files.sh
+echo "Fixing install_tpm permission"
+chmod +x ./install_tpm.sh
 
-echo "Executing copy script"
-./copy_files.sh
+echo "Executing tpm installation script"
+./install_tpm.sh
 
 echo "Executing build"
 pyinstaller tpm-scheduler.spec
