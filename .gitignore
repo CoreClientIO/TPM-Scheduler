@@ -1,0 +1,6 @@
+# IDEA
+.venv
+
+# PyInstaller
+build
+dist
