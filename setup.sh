@@ -6,6 +6,9 @@ chmod +x ./install_tpm.sh
 echo "Executing tpm installation script"
 ./install_tpm.sh
 
+echo "Installing Python dependencies"
+pipx install -r requirements.txt
+
 echo "Executing build"
 pyinstaller tpm-scheduler.spec
 
