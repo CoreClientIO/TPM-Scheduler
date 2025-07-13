@@ -4,7 +4,7 @@
   <a href="https://github.com/CoreClientIO/TPM-Scheduler"><img src="https://img.shields.io/github/stars/CoreClientIO/TPM-Scheduler?style=flat-square" alt="Stars"></a>
   <a href="https://github.com/CoreClientIO/TPM-Scheduler"><img src="https://img.shields.io/github/license/CoreClientIO/TPM-Scheduler?style=flat-square" alt="License"></a>
   <a href="https://img.shields.io/badge/python-3.7%2B-blue?style=flat-square"><img src="https://img.shields.io/badge/python-3.7%2B-blue?style=flat-square" alt="Python"></a>
-  <a href="https://discord.gg/VSBBfr5UTZ"><img src="https://img.shields.io/discord/1249726936425443378?label=Discord&logo=discord&style=flat-square" alt="Discord"></a>
+  <a href="https://discord.gg/H9UeFfJ8mw"><img src="https://img.shields.io/discord/1249726936425443378?label=Discord&logo=discord&style=flat-square" alt="Discord"></a>
 </p>
 
 <h1 align="center">CoreClient TPM-Scheduler</h1>
