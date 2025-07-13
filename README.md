@@ -32,6 +32,16 @@ Run the setup script:
 
 Everything is automated. The binary will be ready to use as `./tpm-scheduler`.
 
+## Automated Service Setup
+
+For the easiest 24/7 operation, run the automated script:
+
+```
+./setup_service.sh
+```
+
+This will move the binary, create the systemd service, enable and start it, and show you all the commands you need. Perfect, fast, and reliable.
+
 ## Usage
 
 **From Source:**
@@ -102,6 +112,79 @@ The built executable is self-contained and can be deployed to any Linux system w
 2. Copy `./tpm-scheduler` to your target server
 3. Make it executable: `chmod +x tpm-scheduler`
 4. Run: `./tpm-scheduler`
+
+## Running as a systemd Service (24/7, No Screen Needed)
+
+*Recommended: Use `./setup_service.sh` for a fully automated setup!*
+
+After building, you can run the scheduler as a background Linux service for true 24/7 reliability.
+
+### 1. Build the Executable
+
+```
+./setup.sh
+```
+
+### 2. Move the Binary
+
+```
+sudo mv tpm-scheduler /usr/local/bin/
+sudo chmod +x /usr/local/bin/tpm-scheduler
+```
+
+### 3. Create the systemd Service File
+
+Create `/etc/systemd/system/tpm-scheduler.service` with:
+
+```
+[Unit]
+Description=CoreClient TPM-Scheduler
+After=network.target
+
+[Service]
+Type=simple
+User=your-username
+WorkingDirectory=/path/to/your/config/and/TPM-loader
+ExecStart=/usr/local/bin/tpm-scheduler
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+- Replace `your-username` with your Linux username.
+- Set `WorkingDirectory` to the folder with your `config.json` and `TPM-loader-linux`.
+
+### 4. Enable and Start the Service
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable tpm-scheduler
+sudo systemctl start tpm-scheduler
+```
+
+### 5. Control and Monitor the Service
+
+- **Restart:**
+  ```
+  sudo systemctl restart tpm-scheduler
+  ```
+- **Stop:**
+  ```
+  sudo systemctl stop tpm-scheduler
+  ```
+- **Status:**
+  ```
+  systemctl status tpm-scheduler
+  ```
+- **Logs:**
+  ```
+  journalctl -u tpm-scheduler -f
+  ```
+
+---
+
+This ensures your scheduler is always running, restarts on crash or reboot, and is easy to manage.
 
 ## Logs
 
