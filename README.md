@@ -1,4 +1,4 @@
-# <img src="/assets/banner.png" alt="CoreClient TPM-Scheduler" width="100%"/>
+# CoreClient TPM-Scheduler
 
 <p align="center">
   <a href="https://github.com/CoreClientIO/TPM-Scheduler"><img src="https://img.shields.io/github/stars/CoreClientIO/TPM-Scheduler?style=flat-square" alt="Stars"></a>
@@ -52,11 +52,9 @@ For 24/7 operation, run:
 ./setup_service.sh
 ```
 
-This will:
-- Move the binary to `/usr/local/bin/`
-- Create and enable a systemd service
-- Start the scheduler in the background
-- Show you all the commands you need for management
+- The **current directory** will always be used as the working directory for the service.
+- If a `config.json5` file is present, it will be copied automatically to `/usr/local/bin/` for the service to use.
+- The service will be enabled, started, and all useful commands will be shown at the end.
 
 ---
 
