@@ -16,47 +16,32 @@ A sophisticated process scheduler for managing TPM-loader-linux with automatic r
 
 ## Installation
 
-### Option 1: Run from Source
-
-1. Clone or download the project
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
+Clone the repository:
 ```
-3. Run directly:
-```bash
-python main.py
+git clone https://github.com/your-org/TPM-Scheduler.git
+cd TPM-Scheduler
 ```
-
-### Option 2: Build Executable
-
-1. Install build dependencies:
-```bash
-pip install pyinstaller
+Make the setup script executable:
+```
+chmod +x setup.sh
+```
+Run the setup script:
+```
+./setup.sh
 ```
 
-2. Build the executable:
-```bash
-pyinstaller tpm-scheduler.spec
-```
-
-3. Run the executable:
-```bash
-./dist/tpm-scheduler
-```
+Everything is automated. The binary will be ready to use as `./tpm-scheduler`.
 
 ## Usage
 
-### Basic Usage
-
 **From Source:**
-```bash
+```
 python main.py
 ```
 
 **From Executable:**
-```bash
-./dist/tpm-scheduler
+```
+./tpm-scheduler
 ```
 
 ### First Run Setup
@@ -78,7 +63,7 @@ The scheduler accepts various duration formats:
 
 Edit `config.json` to customize:
 
-```json
+```
 {
     "screen_name": "TPM",
     "command": "./TPM-loader-linux",
@@ -88,52 +73,23 @@ Edit `config.json` to customize:
 }
 ```
 
-## Building Executable
-
-### Using Spec File (Recommended)
-
-```bash
-# Install PyInstaller
-pip install pyinstaller
-
-# Build using spec file
-pyinstaller tpm-scheduler.spec
-
-# Run the executable
-./dist/tpm-scheduler
-```
-
-### Manual Build
-
-```bash
-pyinstaller --onefile \
-    --name="tpm-scheduler" \
-    --hidden-import=modules.config_manager \
-    --hidden-import=modules.screen_manager \
-    --hidden-import=modules.webhook_handler \
-    --hidden-import=modules.duration_parser \
-    --hidden-import=modules.logger \
-    --add-data="modules:modules" \
-    main.py
-```
-
 ## Project Structure
 
-```bash
+```
 tpm-scheduler/
-├── main.py                 # Main application entry point
+├── main.py                 
 ├── modules/
 │   ├── init.py
-│   ├── config_manager.py   # Configuration management
-│   ├── screen_manager.py   # Screen session handling
-│   ├── webhook_handler.py  # Discord webhook integration
-│   ├── duration_parser.py  # Duration string parsing
-│   └── logger.py          # Logging system
+│   ├── config_manager.py   
+│   ├── screen_manager.py   
+│   ├── webhook_handler.py  
+│   ├── duration_parser.py  
+│   └── logger.py          
 ├── requirements.txt
-├── tpm-scheduler.spec      # PyInstaller spec file
+├── tpm-scheduler.spec      
 ├── README.md
 └── dist/
-└── tpm-scheduler       # Linux executable (after build)
+└── tpm-scheduler       
 ```
 
 ## Deployment
@@ -143,43 +99,15 @@ The built executable is self-contained and can be deployed to any Linux system w
 ### Quick Deployment
 
 1. Build the executable on your development machine
-2. Copy `./dist/tpm-scheduler` to your target server
+2. Copy `./tpm-scheduler` to your target server
 3. Make it executable: `chmod +x tpm-scheduler`
 4. Run: `./tpm-scheduler`
 
-### System Service (Optional)
-
-Create a systemd service file `/etc/systemd/system/tpm-scheduler.service`:
-
-```ini
-[Unit]
-Description=CoreClient TPM-Scheduler
-After=network.target
-
-[Service]
-Type=simple
-User=your-username
-WorkingDirectory=/path/to/tpm-scheduler
-ExecStart=/path/to/tpm-scheduler/dist/tpm-scheduler
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable and start:
-
-```bash
-sudo systemctl enable tpm-scheduler
-sudo systemctl start tpm-scheduler
-```
-
-# Logs
+## Logs
 
 All activities are logged to tpm-scheduler.log with timestamps and detailed information.
 
-# Discord Notifications
+## Discord Notifications
 
 When configured, the scheduler sends branded embed notifications for:
 
@@ -193,44 +121,23 @@ The embeds are styled with CoreClient branding and include:
 - Footer with "CoreClient TPM-Scheduler"
 - Author information
 
-# Requirements
-
-## Runtime Requirements
+## Requirements
 
 - Linux with screen command available
 - Internet connection (for webhook notifications)
+- Python 3.7+ (for building only)
 
-## Development Requirements
-
-- Python 3.7+
-- Dependencies listed in requirements.txt
-
-## Build Requirements
-
-- PyInstaller
-- All runtime and development requirements
-
-# Troubleshooting
-
-## Common Issues
+## Troubleshooting
 
 Screen command not found:
-
-```bash
-# Ubuntu/Debian
+```
 sudo apt-get install screen
-
-# CentOS/RHEL
-sudo yum install screen
 ```
 
 Permission denied:
-```bash
+```
 chmod +x tpm-scheduler
 ```
-
-Module import errors:
-Make sure all modules are properly included in the spec file and the build completed successfully.
 
 # License
 
