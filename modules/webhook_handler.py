@@ -21,9 +21,7 @@ class WebhookHandler:
 
         fields = []
         def add_field(name, value, inline=True):
-            fields.append({"name": name, "value": f"``{value}``", "inline": inline})
-            # Add a blank field for spacing
-            fields.append({"name": "\u200B", "value": "\u200B", "inline": False})
+            fields.append({"name": name, "value": f"```{value}```", "inline": inline})
 
         if status:
             add_field("Status", f"{status_emoji} {status.title()}")
