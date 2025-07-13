@@ -110,11 +110,6 @@ graph TD;
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="/assets/screenshot1.png" alt="Console UI" width="600"/>
-  <br>
-  <i>Modern, beautiful status panel</i>
-</p>
-<p align="center">
   <img src="/assets/webhook_example.png" alt="Discord Webhook" width="500"/>
   <br>
   <i>White-style Discord webhook with emoji, avatar, and status</i>
