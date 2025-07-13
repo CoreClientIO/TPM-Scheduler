@@ -19,6 +19,21 @@ class WebhookHandler:
             None: 'ℹ️'
         }.get(status, 'ℹ️')
 
+        fields = []
+        def add_field(name, value, inline=True):
+            fields.append({"name": name, "value": f"``{value}``", "inline": inline})
+            # Add a blank field for spacing
+            fields.append({"name": "\u200B", "value": "\u200B", "inline": False})
+
+        if status:
+            add_field("Status", f"{status_emoji} {status.title()}")
+        if cycle_duration:
+            add_field("Cycle Duration", f"⏱️ {cycle_duration}")
+        if next_restart:
+            add_field("Next Restart", f"🕒 {next_restart}")
+        if error:
+            add_field("Error", f"{error}", inline=False)
+
         embed = {
             "title": f"{status_emoji} {title}",
             "description": description,
@@ -32,33 +47,8 @@ class WebhookHandler:
                 "name": "CoreClient Scheduler by NonNull",
                 "icon_url": "https://avatars.githubusercontent.com/u/218497533?v=4"
             },
-            "fields": []
+            "fields": fields
         }
-
-        if status:
-            embed["fields"].append({
-                "name": "Status",
-                "value": f"{status_emoji} {status.title()}",
-                "inline": True
-            })
-        if cycle_duration:
-            embed["fields"].append({
-                "name": "Cycle Duration",
-                "value": f"⏱️ {cycle_duration}",
-                "inline": True
-            })
-        if next_restart:
-            embed["fields"].append({
-                "name": "Next Restart",
-                "value": f"🕒 {next_restart}",
-                "inline": True
-            })
-        if error:
-            embed["fields"].append({
-                "name": "Error",
-                "value": f"{error}",
-                "inline": False
-            })
 
         payload = {
             "username": "CoreClient Scheduler",
