@@ -62,23 +62,11 @@ class TPMScheduler:
 
         config = self.config_manager.load_config()
 
-        while True:
-            try:
-                duration_input = Prompt.ask(
-                    "[bold cyan]Enter restart cycle duration[/bold cyan]",
-                    default="30m"
-                )
-
-                duration_seconds = self.duration_parser.parse(duration_input)
-                if duration_seconds is None:
-                    self.console.print("[red]Invalid duration format. Use: 10s, 5m, 1h, etc.[/red]")
-                    continue
-
-                break
-
-            except KeyboardInterrupt:
-                self.console.print("\n[yellow]Exiting...[/yellow]")
-                return
+        duration_input = config.get("cycle_duration", "1h")
+        duration_seconds = self.duration_parser.parse(duration_input)
+        if duration_seconds is None:
+            self.console.print(f"[red]Invalid cycle_duration in config: {duration_input}. Use: 10s, 5m, 1h, etc.[/red]")
+            return
 
         self.logger.info(f"Starting TPM-Scheduler with {duration_input} cycle")
 

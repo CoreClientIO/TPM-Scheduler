@@ -32,6 +32,13 @@ if [[ "$use_current" =~ ^[Nn]$ ]]; then
   read -p "${YELLOW}Enter the absolute path to use as WorkingDirectory: ${NC}" WORKDIR
 fi
 
+# Check for config.json
+if [ ! -f "config.json" ]; then
+  echo -e "${RED}config.json not found in this directory!${NC}"
+  echo -e "${YELLOW}Please run ./tpm-scheduler once manually to set up your configuration before running this script.${NC}"
+  exit 1
+fi
+
 # Move binary
 if [ -f "tpm-scheduler" ]; then
   echo -e "${YELLOW}Moving tpm-scheduler binary to ${BINARY_PATH}...${NC}"

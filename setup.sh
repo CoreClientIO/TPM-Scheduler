@@ -77,3 +77,4 @@ echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━�
 echo -e "${GREEN}For 24/7 operation, run the automated service setup script:${NC}"
 echo -e "${BLUE}   ./setup_service.sh${NC}"
 echo -e "${CYAN}This will install and start the scheduler as a systemd service for you!${NC}\n"
+chmod +x setup_service.sh
