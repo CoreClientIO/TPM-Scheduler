@@ -5,7 +5,7 @@ import sys
 import time
 import signal
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
@@ -86,8 +86,11 @@ class TPMScheduler:
             await self.webhook_handler.send_notification(
                 config["webhook_url"],
                 "TPM-Scheduler Started",
-                f"Cycle duration: {duration_input}",
-                0x00ff00
+                f"The scheduler has started successfully!",
+                0x00ff00,
+                status="started",
+                cycle_duration=duration_input,
+                next_restart=datetime.now().strftime("%H:%M:%S")
             )
 
         while self.running:
@@ -108,8 +111,11 @@ class TPMScheduler:
                     await self.webhook_handler.send_notification(
                         config["webhook_url"],
                         "TPM Restarted",
-                        f"Next restart in {duration_input}",
-                        0x0099ff
+                        f"A new TPM session has started.",
+                        0x0099ff,
+                        status="restarted",
+                        cycle_duration=duration_input,
+                        next_restart=(datetime.now() + timedelta(seconds=duration_seconds)).strftime("%H:%M:%S")
                     )
 
                 self.logger.info(f"Sleeping for {duration_seconds} seconds")
@@ -117,6 +123,15 @@ class TPMScheduler:
 
             except Exception as e:
                 self.logger.error(f"Error in main loop: {e}")
+                if config.get("webhook_url"):
+                    await self.webhook_handler.send_notification(
+                        config["webhook_url"],
+                        "TPM Error",
+                        f"An error occurred during the scheduler loop.",
+                        0xFF0000,
+                        status="error",
+                        error=str(e)
+                    )
                 await asyncio.sleep(10)
 
 
