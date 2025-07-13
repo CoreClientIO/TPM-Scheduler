@@ -8,7 +8,7 @@ CYAN='\033[0;36m'
 MAGENTA='\033[0;35m'
 NC='\033[0m'
 echo -e "${CYAN}"
-echo "   ██████╗ ██████╗ ██████╗ ██████╗███████╗ ██████╗██╗     ██╗███████╗███╗   ██╗████████╗"
+echo "   ██████╗ ██████╗ ██████╗ ██████╗ ███████╗ ██████╗██╗     ██╗███████╗███╗   ██╗████████╗"
 echo "  ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║     ██║██╔════╝████╗  ██║╚══██╔══╝"
 echo "  ██║     ██║   ██║██████╔╝██║     █████╗  ██║     ██║     ██║█████╗  ██╔██╗ ██║   ██║   "
 echo "  ██║     ██║   ██║██╔══██╗██║     ██╔══╝  ██║     ██║     ██║██╔══╝  ██║╚██╗██║   ██║   "
@@ -36,7 +36,10 @@ echo -e "${YELLOW}Ensuring pipx path is set...${NC}"
 pipx ensurepath
 export PATH="$PATH:$(python3 -m site --user-base)/bin:/root/.local/bin:/usr/local/bin"
 echo -e "${YELLOW}Installing Python dependencies with pipx...${NC}"
-pipx install --force --python $(which python3) -r requirements.txt
+for pkg in rich==13.7.0 aiohttp==3.9.1; do
+  echo -e "${CYAN}Installing $pkg (NonNull style)...${NC}"
+  pipx install --force "$pkg"
+done
 echo -e "${YELLOW}Making install_tpm.sh executable...${NC}"
 chmod +x ./install_tpm.sh
 echo -e "${YELLOW}Running TPM loader installer...${NC}"
