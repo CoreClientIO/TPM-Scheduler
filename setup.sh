@@ -1,31 +1,55 @@
 #!/bin/bash
 set -e
-echo "\n========== CoreClient TPM-Scheduler Setup =========="
-echo "Checking for pipx..."
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
+echo -e "${CYAN}"
+echo "   ██████╗ ██████╗ ██████╗ ██████╗███████╗ ██████╗██╗     ██╗███████╗███╗   ██╗████████╗"
+echo "  ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██║     ██║██╔════╝████╗  ██║╚══██╔══╝"
+echo "  ██║     ██║   ██║██████╔╝██║     █████╗  ██║     ██║     ██║█████╗  ██╔██╗ ██║   ██║   "
+echo "  ██║     ██║   ██║██╔══██╗██║     ██╔══╝  ██║     ██║     ██║██╔══╝  ██║╚██╗██║   ██║   "
+echo "  ╚██████╗╚██████╔╝██║  ██║╚██████╗███████╗╚██████╗███████╗██║███████╗██║ ╚████║   ██║   "
+echo "   ╚═════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝ ╚═════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   "
+echo -e "${MAGENTA}                  Programmed by NonNull${NC}"
+echo -e "${BLUE}==================== CoreClient TPM-Scheduler Setup ===================${NC}"
+echo -e "${YELLOW}Checking for pipx... (brought to you by NonNull)${NC}"
 if ! command -v pipx >/dev/null 2>&1; then
-  echo "pipx not found. Installing pipx..."
-  python3 -m pip install --user pipx
-  export PATH="$PATH:$(python3 -m site --user-base)/bin"
-  echo "pipx installed."
+  if [ -f /etc/debian_version ]; then
+    echo -e "${YELLOW}pipx not found. Installing pipx with apt...${NC}"
+    apt update && apt install -y pipx
+    export PATH="$PATH:/root/.local/bin:/usr/local/bin"
+    echo -e "${GREEN}pipx installed via apt. (NonNull made sure this works everywhere)${NC}"
+  else
+    echo -e "${YELLOW}pipx not found. Installing pipx with pip...${NC}"
+    python3 -m pip install --user pipx --break-system-packages || python3 -m pip install --user pipx
+    export PATH="$PATH:$(python3 -m site --user-base)/bin"
+    echo -e "${GREEN}pipx installed via pip. (NonNull's magic)${NC}"
+  fi
 else
-  echo "pipx is already installed."
+  echo -e "${GREEN}pipx is already installed. (NonNull approves)${NC}"
 fi
-echo "Ensuring pipx path is set..."
+echo -e "${YELLOW}Ensuring pipx path is set...${NC}"
 pipx ensurepath
-export PATH="$PATH:$(python3 -m site --user-base)/bin"
-echo "Installing Python dependencies with pipx..."
+export PATH="$PATH:$(python3 -m site --user-base)/bin:/root/.local/bin:/usr/local/bin"
+echo -e "${YELLOW}Installing Python dependencies with pipx...${NC}"
 pipx install --force --python $(which python3) -r requirements.txt
-echo "Making install_tpm.sh executable..."
+echo -e "${YELLOW}Making install_tpm.sh executable...${NC}"
 chmod +x ./install_tpm.sh
-echo "Running TPM loader installer..."
+echo -e "${YELLOW}Running TPM loader installer...${NC}"
 ./install_tpm.sh
-echo "Installing PyInstaller with pipx..."
+echo -e "${YELLOW}Installing PyInstaller with pipx...${NC}"
 pipx install --force pyinstaller
-echo "Building TPM-Scheduler binary..."
+echo -e "${YELLOW}Building CoreClient TPM-Scheduler binary...${NC}"
 pyinstaller tpm-scheduler.spec
-echo "Moving binary to project root..."
+echo -e "${YELLOW}Moving binary to project root...${NC}"
 mv dist/tpm-scheduler .
-echo "Making binary executable..."
+echo -e "${YELLOW}Making binary executable...${NC}"
 chmod +x tpm-scheduler
-echo "\n========== Setup Complete =========="
-echo "You can now start the app using ./tpm-scheduler"
+echo -e "${GREEN}\n==================== Setup Complete ==================="
+echo -e "${CYAN}You can now start the app using ./tpm-scheduler${NC}"
+echo -e "${MAGENTA}         Thank you for using CoreClient | Programmed by NonNull${NC}"
+echo -e "${BLUE}   If this was smooth, that's the NonNull touch. Enjoy!${NC}"
